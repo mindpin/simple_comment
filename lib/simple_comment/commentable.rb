@@ -14,7 +14,7 @@ module SimpleComment
 
     module InstanceMethods
       def add_comment(commenter, content)
-        self.comments.create creator_id: commenter.id, content: content
+        self.comments.create creator: commenter, content: content
       end
     end
   end

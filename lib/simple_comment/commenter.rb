@@ -6,7 +6,7 @@ module SimpleComment
 
     module ClassMethods
       def simple_comment_user
-        has_many :comments, class_name: self.to_s, foreign_key: :creator_id
+        has_many :comments, class_name: 'SimpleComment::Comment', foreign_key: :creator_id
 
         Comment.belongs_to(:creator,
                            class_name:  self.to_s,
