@@ -19,3 +19,20 @@ class User < ActiveRecord::Base
   simple_comment_user
 end
 ```
+
+用法
+========
+--------
+
+被评论模型, 如post:
+```ruby
+post.comments
+```
+评论创建者，如user:
+```ruby
+user.comments
+```
+在模型上添加评论:
+```ruby
+post.add_comment user, '评论内容'
+···
