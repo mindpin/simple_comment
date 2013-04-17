@@ -35,4 +35,4 @@ user.comments
 在模型上添加评论:
 ```ruby
 post.add_comment user, '评论内容'
-···
+```
