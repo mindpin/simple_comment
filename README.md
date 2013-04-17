@@ -24,15 +24,23 @@ end
 ========
 --------
 
-被评论模型, 如post:
+获得被评论模型的所有评论, 如post:
 ```ruby
 post.comments
 ```
-评论创建者，如user:
+获得评论创建者的所有评论，如user:
 ```ruby
 user.comments
 ```
 在模型上添加评论:
 ```ruby
 post.add_comment user, '评论内容'
+```
+获得相关评论创建者评论的scope:
+```ruby
+post.comments.with_creator(user)
+```
+获得排除相关评论创建者评论的scope:
+```ruby
+post.comments.without_creator(user)
 ```
