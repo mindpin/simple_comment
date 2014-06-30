@@ -1,34 +1,27 @@
-ActiveRecord::Base.logger = ActiveSupport::BufferedLogger.new(File.dirname(__FILE__) + "/debug.log")
-ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
-ActiveRecord::Schema.define do
-  create_table :dummy_commentables do |t|
-    t.integer :user_id
-  end unless table_exists?(:dummy_commentables)
+ENV["MONGOID_ENV"] = "test"
+Mongoid.load!("./spec/mongoid.yml")
 
-  create_table :users unless table_exists?(:users)
-
-  create_table :comments, :force => true do |t|
-    t.integer  :commentable_id
-    t.string   :commentable_type
-    t.integer  :creator_id
-    t.text     :content
-    t.integer  :reply_comment_id
-    t.integer  :reply_comment_creator_id
-    t.datetime :created_at
-    t.datetime :updated_at
-  end unless table_exists?(:comments)
-end
-
-class User < ActiveRecord::Base
+class User
+  include Mongoid::Document
+  include Mongoid::Timestamps
   include SimpleComment::Commenter
 
-  has_many :dummy_commentables
+  has_many :dummy_commentables,
+           :foreign_key => :creator_id
+
   simple_comment_user
 end
 
-class DummyCommentable < ActiveRecord::Base;
+class DummyCommentable
+  include Mongoid::Document
+  include Mongoid::Timestamps
   include SimpleComment::Commentable
 
-  belongs_to :user
+  field :content, :type => String
+
+  belongs_to :creator,
+             :class_name => 'User',
+             :foreign_key => :creator_id
+
   simple_comment
 end

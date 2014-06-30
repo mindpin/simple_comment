@@ -6,7 +6,7 @@ module SimpleComment
     end
 
     module ClassMethods
-      def simple_comment(after_comment_save: Proc.new {})
+      def simple_comment(after_comment_save: proc {})
         has_many :comments, class_name: 'SimpleComment::Comment', as: :commentable
         Comment.after_save after_comment_save if after_comment_save.is_a? Proc
       end

@@ -3,8 +3,10 @@
 ---------
 
 ```ruby
-  class Question < ActiveRecord::Base
+  class Question
+    include Mongoid::Document
     include SimpleComment::Commentable
+
     simple_comment :after_comment_save => lambda {|comment,question|
       # 如果是针对 question 创建的评论，当评论被创建后，运行这个钩子
     }
@@ -12,7 +14,8 @@
 ```
 
 ```ruby
-class User < ActiveRecord::Base
+class User
+  include Mongoid::Document
   include SimpleComment::Commenter
 
   # 给 User 增加评论的相关方法

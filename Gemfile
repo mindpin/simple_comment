@@ -1,6 +1,3 @@
-source "http://rubygems.org"
-
-gem 'pry'
-gem 'coveralls', require: false
+source "https://rubygems.org"
 
 gemspec

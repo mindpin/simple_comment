@@ -1,36 +1,52 @@
 require 'spec_helper'
 
-describe SimpleComment do
-  let(:commentable) {FactoryGirl.create :dummy_commentable}
-  let(:creator)     {commentable.user}
-  let(:commenter)   {FactoryGirl.create :user}
-  let(:content)     {'dummy content'}
-
-  describe SimpleComment::Commenter do
-    context 'class methods' do
-      describe '.simple_comment_user' do
-        subject {commenter}
-        it {should respond_to :comments}
+module SimpleComment
+  describe SimpleComment do
+    let(:commentable) {DummyCommentable.create :creator => User.create}
+    let(:creator)     {commentable.creator}
+    let(:commenter)   {User.create}
+    let(:content)     {'dummy content'}
+  
+    describe Commenter do
+      context 'class methods' do
+        describe '.simple_comment_user' do
+          subject {commenter}
+          it {should respond_to :comments}
+        end
       end
     end
-  end
-
-  describe SimpleComment::Commentable do
-    context 'class methods' do
-      describe '.simple_comment' do
-        subject {commentable}
-        it {should respond_to :comments}
+  
+    describe Commentable do
+      context 'class methods' do
+        describe '.simple_comment' do
+          subject {commentable}
+          it {should respond_to :comments}
+        end
       end
-    end
+  
+      context 'instance methods' do
+        describe '#add_comment' do
+          subject {commentable.add_comment(commenter, content)}
+  
+          it {should be_a Comment}
+          it {expect(subject.content).to eq content}
+          it {expect(subject.commentable).to be_a DummyCommentable}
+          it {expect(subject.creator).to eq commenter}
+          it 'creates a new comment' do
+            expect {subject}.to change {commentable.comments.count}.by(1)
+          end
+        end
+      end
 
-    context 'instance methods' do
-      describe '#add_comment' do
-        subject {commentable.add_comment(commenter, content)}
+      context "comments are also commentable" do
+        let(:comment1) {commentable.add_comment creator, content}
+        let(:comment2) {comment1.add_comment commenter, content}
+        subject {comment2}
 
-        it                {should be_a SimpleComment::Comment}
-        its(:content)     {should eq content}
-        its(:commentable) {should be_a DummyCommentable}
-        its(:creator)     {should eq commenter}
+        it {should be_a Comment}
+        it {expect(subject.content).to eq content}
+        it {expect(subject.commentable).to be_a Comment}
+        it {expect(subject.creator).to eq commenter}
         it 'creates a new comment' do
           expect {subject}.to change {commentable.comments.count}.by(1)
         end

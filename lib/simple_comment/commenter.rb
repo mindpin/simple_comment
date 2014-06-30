@@ -12,9 +12,6 @@ module SimpleComment
                            class_name:  self.to_s,
                            foreign_key: :creator_id)
 
-        Comment.belongs_to(:reply_comment_creator,
-                           class_name:  self.to_s,
-                           foreign_key: :reply_comment_creator_id)
       end
     end
   end
