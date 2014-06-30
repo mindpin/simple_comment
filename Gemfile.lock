@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple_comment (0.0.2)
+    simple_comment (0.1.0)
       mongoid (>= 4.0.0)
 
 GEM

@@ -37,19 +37,20 @@ module SimpleComment
           end
         end
       end
+    end
 
-      context "comments are also commentable" do
-        let(:comment1) {commentable.add_comment creator, content}
-        let(:comment2) {comment1.add_comment commenter, content}
-        subject {comment2}
+    context "comments are replyable" do
+      let(:comment1) {commentable.add_comment creator, content}
+      let(:comment2) {comment1.add_reply commenter, content}
+      subject {comment2}
 
-        it {should be_a Comment}
-        it {expect(subject.content).to eq content}
-        it {expect(subject.commentable).to be_a Comment}
-        it {expect(subject.creator).to eq commenter}
-        it 'creates a new comment' do
-          expect {subject}.to change {commentable.comments.count}.by(1)
-        end
+      it {should be_a Comment}
+      it {expect(subject.content).to eq content}
+      it {expect(subject.reply_comment).to be_a Comment}
+      it {expect(subject.creator).to eq commenter}
+      it 'creates a new comment' do
+        comment1
+        expect {subject}.to change {commentable.comments.count}.by(1)
       end
     end
   end

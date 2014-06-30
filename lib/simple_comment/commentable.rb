@@ -13,8 +13,10 @@ module SimpleComment
     end
 
     module InstanceMethods
-      def add_comment(commenter, content)
-        self.comments.create creator: commenter, content: content
+      def add_comment(commenter, content, reply_comment: nil)
+        self.comments.create :creator       => commenter,
+                             :content       => content,
+                             :reply_comment => reply_comment
       end
     end
   end

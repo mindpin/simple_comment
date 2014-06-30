@@ -39,6 +39,16 @@ user.comments
 ```ruby
 post.add_comment user, '评论内容'
 ```
+在评论上添加回复:
+```ruby
+content = '评论内容'
+
+comment.add_reply user, content
+
+# or
+
+commentable.add_comment user, content, :reply_comment => comment
+```
 获得相关评论创建者评论的scope:
 ```ruby
 post.comments.with_creator(user)
@@ -46,4 +56,5 @@ post.comments.with_creator(user)
 获得排除相关评论创建者评论的scope:
 ```ruby
 post.comments.without_creator(user)
+```
 ```
